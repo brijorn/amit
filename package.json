@@ -4,8 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node dist/index.js",
     "build": "tsc",
+    "start": "node dist/index.js",
+    "release": "npx semantic-release",
+    "deploy": "tsc && node dist/index.js",
     "dev": "npx ts-node-dev src --slash-log",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
