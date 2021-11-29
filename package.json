@@ -1,0 +1,34 @@
+{
+  "name": "amit",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@discordjs/builders": "^0.8.2",
+    "@discordjs/opus": "^0.7.0",
+    "@discordjs/rest": "^0.1.0-canary.0",
+    "@discordjs/voice": "^0.7.5",
+    "axios": "^0.21.4",
+    "dayjs": "^1.10.7",
+    "discord-api-types": "^0.24.0",
+    "discord.js": "^13.3.1",
+    "dotenv": "^10.0.0",
+    "ffmpeg": "^0.0.4",
+    "ffmpeg-static": "^4.4.0",
+    "fluent-ffmpeg": "^2.1.2",
+    "libsodium-wrappers": "^0.7.9",
+    "yt-search": "^2.10.2",
+    "ytdl-core": "^4.9.1",
+    "ytdl-core-discord": "^1.3.1"
+  },
+  "devDependencies": {
+    "ts-node-dev": "^1.1.8",
+    "typescript": "^4.5.2"
+  }
+}
