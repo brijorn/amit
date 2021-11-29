@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -14,7 +15,6 @@
     "@discordjs/opus": "^0.7.0",
     "@discordjs/rest": "^0.1.0-canary.0",
     "@discordjs/voice": "^0.7.5",
-    "axios": "^0.21.4",
     "dayjs": "^1.10.7",
     "discord-api-types": "^0.24.0",
     "discord.js": "^13.3.1",
