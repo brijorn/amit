@@ -2,15 +2,16 @@ import { Client, ClientOptions, Collection } from 'discord.js';
 import CommandHandler from './handlers/CommandHandler';
 import EventHandler from './handlers/EventHandler';
 import SongManager from './lib/music/SongManager';
-import { BotContext } from './typings';
+import { BotContext, PartialBotContext } from './typings';
 
 const dotenv = require('dotenv').config();
 
 const opt: ClientOptions = {
-  intents: ['GUILD_MEMBERS', 'GUILDS']
+  intents: ['GUILD_MEMBERS', 'GUILDS', 'GUILD_VOICE_STATES']
 };
 
-class BotApplication {
+export default class BotApplication {
+  
   bot: Client;
   commands: CommandHandler;
 
@@ -19,20 +20,13 @@ class BotApplication {
   music: Collection<string, SongManager>
   constructor() {
     this.bot = new Client(opt);
-    this.commands = new CommandHandler(this.getContext());
-    this.events = new EventHandler(this.getContext());
+    this.commands = new CommandHandler(this);
+
+    this.events = new EventHandler(this);
     this.music = new Collection()
+  
     this.bot.login(process.env.DISCORD_TOKEN);
 
-  }
-
-  getContext(): BotContext {
-    return {
-      bot: this.bot,
-      commands: this.commands,
-      events: this.events,
-      music: this.music,
-    };
   }
 }
 

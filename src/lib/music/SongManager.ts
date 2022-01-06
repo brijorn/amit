@@ -10,21 +10,22 @@ import {
   VoiceChannel
 } from "discord.js";
 import { BotContext, Song } from "../../typings";
+import BotApplication from '../../index';
 import { createDiscordJSAdapter } from "./adapter";
 import musicActions from "./interaction";
 
 dayjs.extend(duration)
 export default class {
-  private ctx: BotContext;
+  private ctx: BotApplication;
   private queue: Song[];
-  private previousSongs: Song[];
-  private player: AudioPlayer;
+  private readonly previousSongs: Song[];
+  private readonly player: AudioPlayer;
   private connection: VoiceConnection;
 
   guildId: string;
   public currentSong?: Song;
   status: "idle" | "buffering" | "playing";
-  constructor(ctx: BotContext, channel: VoiceChannel) {
+  constructor(ctx: BotApplication, channel: VoiceChannel) {
     this.ctx = ctx;
     this.queue = [];
     this.previousSongs = [];

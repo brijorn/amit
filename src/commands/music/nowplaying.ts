@@ -8,10 +8,11 @@ import {
 } from "discord.js";
 import musicActions from "../../lib/music/interaction";
 import Command from "../../lib/structures/Command";
-import { BotContext } from "../../typings";
+import { PartialBotContext } from "../../typings";
+import BotApplication from '../../index';
 
 export default class extends Command {
-  constructor(ctx: BotContext) {
+  constructor(ctx: BotApplication) {
     super(
       ctx,
       new SlashCommandBuilder()

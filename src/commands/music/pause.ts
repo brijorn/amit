@@ -2,10 +2,11 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 import { CommandInteraction } from "discord.js";
 import { commandError, commandSuccess } from "../../lib/interactionHelpers";
 import Command from "../../lib/structures/Command";
-import { BotContext } from "../../typings";
+import { PartialBotContext } from "../../typings";
+import BotApplication from '../../index';
 
 export default class extends Command {
-  constructor(ctx: BotContext) {
+  constructor(ctx: BotApplication) {
     super(
       ctx,
       new SlashCommandBuilder()

@@ -1,10 +1,11 @@
 import { Interaction } from "discord.js";
 import OriginEvent from "../lib/structures/Event";
+import BotApplication from '../index';
 import { BotContext } from "../typings";
 
 export default class extends OriginEvent {
 
-    constructor(ctx: BotContext) {
+    constructor(ctx: BotApplication) {
         super(ctx, "interactionCreate")
     }
     async execute(interaction: Interaction): Promise<void> {

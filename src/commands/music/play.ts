@@ -1,22 +1,23 @@
-import { SlashCommandBuilder } from "@discordjs/builders";
-import { createAudioResource } from "@discordjs/voice";
-import { CommandInteraction, MessageEmbed } from "discord.js";
-import ytdl from "ytdl-core";
-import SongManager from "../../lib/music/SongManager";
-import Command from "../../lib/structures/Command";
-import { BotContext, Song } from "../../typings";
-const yts = require("yt-search");
+import { SlashCommandBuilder } from '@discordjs/builders';
+import { createAudioResource } from '@discordjs/voice';
+import { CommandInteraction, MessageEmbed } from 'discord.js';
+import ytdl from 'ytdl-core';
+import SongManager from '../../lib/music/SongManager';
+import Command from '../../lib/structures/Command';
+import { BotContext, PartialBotContext, Song } from '../../typings';
+import BotApplication from '../../index';
+const yts = require('yt-search');
 export default class extends Command {
-  constructor(ctx: BotContext) {
+  constructor(ctx: BotApplication) {
     super(
       ctx,
       new SlashCommandBuilder()
-        .setName("play")
-        .setDescription("Play a song")
+        .setName('play')
+        .setDescription('Play a song')
         .addStringOption((option) =>
           option
-            .setName("song")
-            .setDescription("The name of the song you want to play")
+            .setName('song')
+            .setDescription('The name of the song you want to play')
             .setRequired(true)
         )
     );
@@ -27,25 +28,24 @@ export default class extends Command {
     let member = guild?.members.cache.get(interaction.user.id);
 
     let voiceChannel = member?.voice.channel;
-    if (!member || !voiceChannel || voiceChannel.type !== "GUILD_VOICE")
+    if (!member || !voiceChannel || voiceChannel.type !== 'GUILD_VOICE')
       return interaction.reply({
-        content: "You must be in a voice channel to play music",
-        ephemeral: true,
+        content: 'You must be in a voice channel to play music',
+        ephemeral: true
       });
 
     await interaction.deferReply();
 
-    const songArg = interaction.options.getString("song");
+    const songArg = interaction.options.getString('song');
 
     const keywordSearch: { videos: VideoResult[] } = await yts(songArg!);
 
     if (keywordSearch.videos.length == 0)
       return interaction.editReply({
-        content: `Could not find the song **${songArg}**`,
+        content: `Could not find the song **${songArg}**`
       });
 
-
-    const video = keywordSearch.videos.filter(v => v.type == "video")[0];
+    const video = keywordSearch.videos.filter((v) => v.type == 'video')[0];
 
     const song: Song = {
       channel: interaction.channel!,
@@ -54,26 +54,28 @@ export default class extends Command {
         title: video.title,
         url: video.url,
         author: {
-          name: video.author.name,
+          name: video.author.name
         },
         thumbnail: video.thumbnail,
-        duration: video.seconds,
+        duration: video.seconds
       },
       announced: false,
       resource: createAudioResource(
         ytdl(video.url, {
-          filter: "audioonly",
-          highWaterMark: 1 << 25,
+          filter: 'audioonly',
+          highWaterMark: 1 << 25
         }),
         {
-          inlineVolume: true,
+          inlineVolume: true
         }
       ),
       timestamp: video.timestamp,
-      user: member,
+      user: member
     };
 
-    await interaction.editReply({ embeds: [successEmbed(song, this.ctx.bot.user?.avatarURL()!)] });
+    await interaction.editReply({
+      embeds: [successEmbed(song, this.ctx.bot.user?.avatarURL()!)]
+    });
 
     const queues = this.ctx.music;
 
@@ -87,15 +89,17 @@ export default class extends Command {
       queue.addSong(song);
     }
 
-    if (!queue) return interaction.editReply("Could not fetch server queue");
+    if (!queue) return interaction.editReply('Could not fetch server queue');
   }
 }
 
 const successEmbed = (song: Song, botAvatar: string) => {
   const details = song.videoDetails;
   return new MessageEmbed()
-    .setColor("BLURPLE")
-    .setDescription(`\`${song.videoDetails.title}\` Successfully added to Queue`)
+    .setColor('BLURPLE')
+    .setDescription(
+      `\`${song.videoDetails.title}\` Successfully added to Queue`
+    )
     .setURL(details.url)
     .setThumbnail(details.thumbnail)
     .setAuthor(details.author.name, botAvatar);
@@ -108,14 +112,14 @@ interface VideoResult {
   title: string;
   description: string;
   image: string;
-  thumbnail: string,
-  seconds: number,
-  timestamp: string
-  duration: any,
-  ago: string,
-  views: number,
-  author: { 
-    name: string,
-    url: string,
-  }
+  thumbnail: string;
+  seconds: number;
+  timestamp: string;
+  duration: any;
+  ago: string;
+  views: number;
+  author: {
+    name: string;
+    url: string;
+  };
 }

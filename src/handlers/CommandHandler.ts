@@ -3,12 +3,12 @@ import { readdirSync } from 'fs';
 import { join } from 'path';
 import auth from '../config.json';
 import Command from '../lib/structures/Command';
-import { BotContext } from '../typings';
+import { BotContext, PartialBotContext } from '../typings';
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
 export default class CommandHandler extends Collection<string, Command> {
-  private ctx: BotContext;
-  constructor(ctx: BotContext) {
+  private ctx: PartialBotContext;
+  constructor(ctx: PartialBotContext) {
     super();
     this.ctx = ctx;
 

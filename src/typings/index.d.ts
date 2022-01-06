@@ -1,49 +1,52 @@
-import { AudioPlayer, AudioResource, VoiceConnection } from "@discordjs/voice";
-import { Client, Collection, GuildMember, TextBasedChannels, VoiceChannel } from "discord.js";
-import CommandHandler from "../handlers/CommandHandler";
-import EventHandler from "../handlers/EventHandler";
-import SongManager from "../lib/music/SongManager";
+import { AudioPlayer, AudioResource, VoiceConnection } from '@discordjs/voice';
+import {
+  Client,
+  Collection,
+  GuildMember,
+  TextBasedChannels,
+  VoiceChannel
+} from 'discord.js';
+import CommandHandler from '../handlers/CommandHandler';
+import SongManager from '../lib/music/SongManager';
 
-interface BotContext {
-	bot: Client
-	commands: CommandHandler
-	events: EventHandler
+interface PartialBotContext {
+  bot: Client;
+  music: Collection<string, SongManager>;
+}
 
-	music: Collection<string, SongManager>
+interface BotContext extends PartialBotContext {
+  commands: CommandHandler
 }
 interface SongQueue {
+  playing: boolean;
 
-	playing: boolean = false,
+  voiceChannel: VoiceChannel;
 
-	voiceChannel: VoiceChannel,
+  player: AudioPlayer;
 
-	player: AudioPlayer
+  volume: number;
 
-	volume: number,
+  songs: Song[];
 
-	songs: Song[],
-
-	connection: VoiceConnection
+  connection: VoiceConnection;
 }
 
 interface Song {
+  user: GuildMember;
+  announced: boolean;
 
-	user: GuildMember,
-	announced: boolean,
+  channel: TextBasedChannels;
 
-	channel: TextBasedChannels,
+  timestamp: string;
+  videoDetails: {
+    title: string;
+    url: string;
+    duration: number;
+    thumbnail: string;
+    author: {
+      name: string;
+    };
+  };
 
-	timestamp: string,
-	videoDetails: {
-		title: string;
-		url: string;
-		duration: number;
-		thumbnail: string;
-		author: {
-		  name: string;
-		};
-	}
-
-	resource: AudioResource
-	
+  resource: AudioResource;
 }
