@@ -3,14 +3,13 @@ import { createAudioResource } from "@discordjs/voice";
 import { CommandInteraction, MessageEmbed } from "discord.js";
 import ytdl from "ytdl-core";
 import SongManager from "../../lib/music/SongManager";
-import OriginClient from "../../lib/OriginClient";
 import Command from "../../lib/structures/Command";
-import { Song } from "../../typings/origin";
+import { BotContext, Song } from "../../typings";
 const yts = require("yt-search");
 export default class extends Command {
-  constructor(bot: OriginClient) {
+  constructor(ctx: BotContext) {
     super(
-      bot,
+      ctx,
       new SlashCommandBuilder()
         .setName("play")
         .setDescription("Play a song")
@@ -24,7 +23,7 @@ export default class extends Command {
   }
 
   async execute(interaction: CommandInteraction) {
-    let guild = this.bot.guilds.cache.get(interaction.guildId);
+    let guild = this.ctx.bot.guilds.cache.get(interaction.guildId);
     let member = guild?.members.cache.get(interaction.user.id);
 
     let voiceChannel = member?.voice.channel;
@@ -47,11 +46,6 @@ export default class extends Command {
 
 
     const video = keywordSearch.videos.filter(v => v.type == "video")[0];
-
-    console.log(video)
-    const util = require('util')
-    console.log(video.duration)
-    console.log(video.author)
 
     const song: Song = {
       channel: interaction.channel!,
@@ -79,13 +73,13 @@ export default class extends Command {
       user: member,
     };
 
-    await interaction.editReply({ embeds: [successEmbed(song, this.bot.user?.avatarURL()!)] });
+    await interaction.editReply({ embeds: [successEmbed(song, this.ctx.bot.user?.avatarURL()!)] });
 
-    const queues = this.bot.songQueues;
+    const queues = this.ctx.music;
 
     let queue = queues.get(interaction.guildId);
     if (!queue?.currentSong) {
-      queues.set(interaction.guildId, new SongManager(this.bot, voiceChannel));
+      queues.set(interaction.guildId, new SongManager(this.ctx, voiceChannel));
       queue = queues.get(interaction.guildId)!;
       queue.addSong(song);
       queue?.start();

@@ -1,14 +1,14 @@
-import { join } from "path";
-const { REST } = require("@discordjs/rest");
-const { Routes } = require("discord-api-types/v9");
-import { Collection } from "discord.js";
-import { readdirSync, readFile } from "fs";
-import OriginClient from "../lib/OriginClient";
-import Command from "../lib/structures/Command";
-import auth from "../config.json"
+import { Client, Collection } from 'discord.js';
+import { readdirSync } from 'fs';
+import { join } from 'path';
+import auth from '../config.json';
+import Command from '../lib/structures/Command';
+import { BotContext } from '../typings';
+const { REST } = require('@discordjs/rest');
+const { Routes } = require('discord-api-types/v9');
 export default class CommandHandler extends Collection<string, Command> {
-  bot: OriginClient;
-  constructor(bot: OriginClient) {
+  private bot: Client;
+  constructor(bot: Client) {
     super();
     this.bot = bot;
 
@@ -24,29 +24,11 @@ export default class CommandHandler extends Collection<string, Command> {
       this.set(cmd.data.name, cmd);
     });
 
-    if (process.argv.includes("--slash-log")) {
-      let restCommands = commands.map((cmd) => cmd.data.toJSON());
-      const rest = new REST({ version: "9" }).setToken(process.env.DISCORD_TOKEN);
-
-      rest
-        .put(
-          Routes.applicationGuildCommands(
-            auth.clientId,
-            auth.developerGuildId,
-          ),
-          { body: restCommands }
-        )
-        .then(() =>
-          console.log("Successfully registered application commands.")
-        )
-        .catch(console.error);
-    }
-
     return this;
   }
 
   async getCommands(json = false): Promise<Command[]> {
-    const path = join(__dirname, "..", "commands");
+    const path = join(__dirname, '..', 'commands');
 
     const commands: Command[] = [];
     const modules = readdirSync(path);

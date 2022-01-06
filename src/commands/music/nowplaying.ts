@@ -7,13 +7,13 @@ import {
   MessageEmbed,
 } from "discord.js";
 import musicActions from "../../lib/music/interaction";
-import OriginClient from "../../lib/OriginClient";
 import Command from "../../lib/structures/Command";
+import { BotContext } from "../../typings";
 
 export default class extends Command {
-  constructor(bot: OriginClient) {
+  constructor(ctx: BotContext) {
     super(
-      bot,
+      ctx,
       new SlashCommandBuilder()
         .setName("nowplaying")
         .setDescription("View the song that is currently playing")
@@ -24,7 +24,7 @@ export default class extends Command {
     const button = new MessageButton().setCustomId("skipSong").setLabel("Skip").setStyle('PRIMARY');
     const row = new MessageActionRow().addComponents(button);
 
-    const manager = this.bot.songQueues.get(
+    const manager = this.ctx.music.songQueues.get(
       interaction.guildId
     );
     const currentSong = manager?.currentSong
@@ -40,7 +40,7 @@ export default class extends Command {
     await interaction.reply({
       embeds: [
         new MessageEmbed()
-          .setAuthor("Now Playing", this.bot.user!.avatarURL()!)
+          .setAuthor("Now Playing", this.ctx.bot.user!.avatarURL()!)
           .setDescription(
             `[${currentSong.videoDetails.title}](${currentSong.videoDetails.url})\n\n\`Requested by:\` ${currentSong.user}`
           ),

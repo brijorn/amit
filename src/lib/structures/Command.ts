@@ -1,14 +1,14 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { ApplicationCommand, Interaction } from "discord.js"
-import OriginClient from "../OriginClient";
+import { Interaction } from "discord.js";
+import { BotContext } from "../../typings";
 
 export default class Command {
     data: SlashCommandBuilder;
-    bot: OriginClient;
+    ctx: BotContext;
 
-    constructor(bot: OriginClient, data: any) {
+    constructor(ctx: BotContext, data: any) {
         this.data = data;
-        this.bot = bot
+        this.ctx = ctx
     }
 
     execute (interaction: Interaction): Promise<unknown> | undefined {

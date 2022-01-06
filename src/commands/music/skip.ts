@@ -1,12 +1,12 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction, Interaction, MessageEmbed } from "discord.js";
-import OriginClient from "../../lib/OriginClient";
+import { CommandInteraction, MessageEmbed } from "discord.js";
 import Command from "../../lib/structures/Command";
+import { BotContext } from "../../typings";
 
 export default class extends Command {
-  constructor(bot: OriginClient) {
+  constructor(ctx: BotContext) {
     super(
-      bot,
+      ctx,
       new SlashCommandBuilder()
     .setName("skip")
     .setDescription("Skip a song in the queue"),
@@ -14,7 +14,7 @@ export default class extends Command {
   }
 
   async execute(interaction: CommandInteraction) {
-    let guild = this.bot.guilds.cache.get(interaction.guildId);
+    let guild = this.ctx.bot.guilds.cache.get(interaction.guildId);
     let member = guild?.members.cache.get(interaction.user.id);
 
     if (!member?.voice.channel) return interaction.reply({ content: 'You are not in a voice channel', ephemeral: true })
@@ -22,7 +22,7 @@ export default class extends Command {
 
 
     
-    const manager = this.bot.songQueues.get(interaction.guildId)
+    const manager = this.ctx.music.songQueues.get(interaction.guildId)
     if (!manager) return interaction.reply({ content: 'There is no queue for this guild' })
 
     manager.skipSong()

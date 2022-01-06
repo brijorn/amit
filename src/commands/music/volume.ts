@@ -1,12 +1,12 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction, Interaction } from "discord.js";
-import OriginClient from "../../lib/OriginClient";
+import { CommandInteraction } from "discord.js";
 import Command from "../../lib/structures/Command";
+import { BotContext } from "../../typings";
 
 export default class extends Command {
-  constructor(bot: OriginClient) {
+  constructor(ctx: BotContext) {
     super(
-      bot,
+      ctx,
       new SlashCommandBuilder()
     .setName("volume")
     .setDescription("Control the volume of the player, value must be between 0 and 5")
@@ -17,7 +17,7 @@ export default class extends Command {
 
   async execute(interaction: CommandInteraction) {
 
-    let guild = this.bot.guilds.cache.get(interaction.guildId);
+    let guild = this.ctx.bot.guilds.cache.get(interaction.guildId);
     let member = guild?.members.cache.get(interaction.user.id);
 
     if (!member?.voice.channel) return interaction.reply({ content: 'You are not in a voice channel', ephemeral: true })
@@ -27,7 +27,7 @@ export default class extends Command {
     if (!volume) throw new Error('Volume is null')
 
     if (volume == 0 || volume > 5) return interaction.reply({ content: 'Invalid volume, give a value between 0 and 5', ephemeral: true})
-    const manager = this.bot.songQueues.get(interaction.guildId)
+    const manager = this.ctx.music.songQueues.get(interaction.guildId)
     if (!manager) return interaction.reply({ content: 'There is no queue for this guild' })
 
     const currentSong = manager.currentSong

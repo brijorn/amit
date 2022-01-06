@@ -1,12 +1,12 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { CommandInteraction, Interaction } from "discord.js";
-import OriginClient from "../../lib/OriginClient";
 import Command from "../../lib/structures/Command";
+import { BotContext } from "../../typings";
 
 export default class extends Command {
-  constructor(bot: OriginClient) {
+  constructor(ctx: BotContext) {
     super(
-      bot,
+      ctx,
       new SlashCommandBuilder()
     .setName("slap")
     .setDescription("Slap someone ig")
@@ -15,8 +15,8 @@ export default class extends Command {
     )
   }
 
-  async execute(interaction: CommandInteraction) {
-    
+  async execute(interaction: Interaction) {
+    if (interaction.isApplicationCommand)
     const target = interaction.options.getMentionable("target");
     await interaction.reply(`${interaction.user} has slapped ${target}`);
   }

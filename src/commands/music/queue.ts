@@ -6,13 +6,13 @@ import {
 } from "discord.js";
 import { commandError } from "../../lib/interactionHelpers";
 import musicActions from "../../lib/music/interaction";
-import OriginClient from "../../lib/OriginClient";
 import Command from "../../lib/structures/Command";
+import { BotContext } from "../../typings";
 
 export default class extends Command {
-  constructor(bot: OriginClient) {
+  constructor(ctx: BotContext) {
     super(
-      bot,
+      ctx,
       new SlashCommandBuilder()
         .setName("queue")
         .setDescription("View all the songs currently queued to play")
@@ -23,7 +23,7 @@ export default class extends Command {
     const button = new MessageButton().setCustomId("skipSong").setLabel("Skip").setStyle('PRIMARY');
     const row = new MessageActionRow().addComponents(button);
 
-    const manager = this.bot.songQueues.get(
+    const manager = this.ctx.music.songQueues.get(
       interaction.guildId
     );
 
@@ -33,7 +33,7 @@ export default class extends Command {
     await interaction.reply({
       embeds: [
         new MessageEmbed()
-          .setAuthor("Queue", this.bot.user!.avatarURL()!)
+          .setAuthor("Queue", this.ctx.bot.user!.avatarURL()!)
           .setDescription(
             manager.formatQueue() + `\n\n**Total Length: ${manager.queueDuration()}**` || '*Queue is emptier than my brain*'
           )

@@ -1,12 +1,12 @@
-import OriginClient from '../OriginClient'
+import { BotContext } from '../../typings';
 
 export default class OriginEvent {
-    bot: OriginClient;
+    ctx: BotContext;
     name: string;
     once = false;
 
-    constructor(bot: OriginClient, name: string) {
-        this.bot = bot;
+    constructor(ctx: BotContext, name: string) {
+        this.ctx = ctx;
         this.name = name;
     }
 

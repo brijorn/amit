@@ -1,12 +1,12 @@
-import { join, parse } from 'path';
-import { Collection } from 'discord.js'
-import OriginClient from '../lib/OriginClient';
-import { readdirSync, readFileSync } from 'fs'
+import { Client, Collection } from 'discord.js';
+import { readdirSync } from 'fs';
+import { join } from 'path';
 import OriginEvent from '../lib/structures/Event';
+import { BotContext } from '../typings';
 export default class EventHandler extends Collection<string, Event> {
-    bot: OriginClient;
+    private bot: Client;
 
-    constructor(bot: OriginClient) {
+    constructor(bot: Client) {
         super();
 
         this.bot = bot;

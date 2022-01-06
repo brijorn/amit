@@ -1,28 +1,21 @@
 import {
-  AudioPlayer,
-  AudioPlayerState,
-  AudioPlayerStatus,
-  createAudioPlayer,
-  entersState,
-  joinVoiceChannel,
-  VoiceConnection,
+  AudioPlayer, AudioPlayerStatus,
+  createAudioPlayer, joinVoiceChannel,
+  VoiceConnection
 } from "@discordjs/voice";
+import dayjs from "dayjs";
+import duration from 'dayjs/plugin/duration';
 import {
-  GuildMember,
-  MessageButton,
-  MessageEmbed,
-  VoiceChannel,
+  GuildMember, MessageEmbed,
+  VoiceChannel
 } from "discord.js";
-import { Song } from "../../typings/origin";
-import OriginClient from "../OriginClient";
+import { BotContext, Song } from "../../typings";
 import { createDiscordJSAdapter } from "./adapter";
 import musicActions from "./interaction";
-import dayjs from "dayjs";
 
-import duration from 'dayjs/plugin/duration';
 dayjs.extend(duration)
 export default class {
-  private bot: OriginClient;
+  private ctx: BotContext;
   private queue: Song[];
   private previousSongs: Song[];
   private player: AudioPlayer;
@@ -31,8 +24,8 @@ export default class {
   guildId: string;
   public currentSong?: Song;
   status: "idle" | "buffering" | "playing";
-  constructor(bot: OriginClient, channel: VoiceChannel) {
-    this.bot = bot;
+  constructor(ctx: BotContext, channel: VoiceChannel) {
+    this.ctx = ctx;
     this.queue = [];
     this.previousSongs = [];
     this.status = "idle";
@@ -108,7 +101,7 @@ export default class {
 
     this.player.stop();
     this.connection.destroy();
-    this.bot.songQueues.delete(this.guildId);
+    this.ctx.music.delete(this.guildId);
   }
   skipSong() {
     this.player.stop();
@@ -148,7 +141,7 @@ export default class {
         new MessageEmbed()
           .setAuthor(
             song.videoDetails.author.name,
-            this.bot.user?.avatarURL()!
+            this.ctx.bot.user?.avatarURL()!
           )
           .setColor("#fac17a")
           .setDescription(
