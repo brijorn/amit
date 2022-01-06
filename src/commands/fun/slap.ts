@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction, Interaction } from "discord.js";
+import { ApplicationCommand, CommandInteraction, Interaction } from "discord.js";
 import Command from "../../lib/structures/Command";
 import { BotContext } from "../../typings";
 
@@ -15,8 +15,7 @@ export default class extends Command {
     )
   }
 
-  async execute(interaction: Interaction) {
-    if (interaction.isApplicationCommand)
+  async execute(interaction: CommandInteraction) {
     const target = interaction.options.getMentionable("target");
     await interaction.reply(`${interaction.user} has slapped ${target}`);
   }
