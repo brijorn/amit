@@ -22,7 +22,7 @@ export default class extends Command {
 
 
     
-    const manager = this.ctx.music.songQueues.get(interaction.guildId)
+    const manager = this.ctx.music.get(interaction.guildId)
     if (!manager) return interaction.reply({ content: 'There is no queue for this guild' })
 
     manager.skipSong()

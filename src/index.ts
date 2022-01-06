@@ -15,12 +15,15 @@ class BotApplication {
   commands: CommandHandler;
 
   events: EventHandler;
+
+  music: Collection<string, SongManager>
   constructor() {
     this.bot = new Client(opt);
     this.commands = new CommandHandler(this.getContext());
     this.events = new EventHandler(this.getContext());
-
+    this.music = new Collection()
     this.bot.login(process.env.DISCORD_TOKEN);
+
   }
 
   getContext(): BotContext {
@@ -28,7 +31,7 @@ class BotApplication {
       bot: this.bot,
       commands: this.commands,
       events: this.events,
-      music: new Collection<string, SongManager>()
+      music: this.music,
     };
   }
 }

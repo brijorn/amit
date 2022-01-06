@@ -21,7 +21,7 @@ export default class extends Command {
     if (!member?.voice.channel) return interaction.reply({ content: 'You are not in a voice channel', ephemeral: true })
     if (member.voice.channel !== member.guild.me?.voice.channel) return interaction.reply({ content: 'You are not in my voice channel', ephemeral: true })
     
-    const manager = this.ctx.music.songQueues.get(
+    const manager = this.ctx.music.get(
         interaction.guildId
       );
     

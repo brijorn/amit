@@ -27,7 +27,7 @@ export default class extends Command {
     if (!volume) throw new Error('Volume is null')
 
     if (volume == 0 || volume > 5) return interaction.reply({ content: 'Invalid volume, give a value between 0 and 5', ephemeral: true})
-    const manager = this.ctx.music.songQueues.get(interaction.guildId)
+    const manager = this.ctx.music.get(interaction.guildId)
     if (!manager) return interaction.reply({ content: 'There is no queue for this guild' })
 
     const currentSong = manager.currentSong
