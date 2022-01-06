@@ -7,6 +7,7 @@ export default class extends OriginEvent {
     super(ctx, 'ready');
   }
   async execute(): Promise<void> {
+      console.log('ready')
       this.ctx.bot.user?.setPresence({ activities: [], status: 'idle'})
   }
 }

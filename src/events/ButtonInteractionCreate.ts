@@ -12,7 +12,7 @@ export default class extends OriginEvent {
     if (!interaction.isButton()) return;
 
     if (interaction.customId == "skipSong") {
-      const manager = this.ctx.music.songQueues.get(interaction.guildId);
+      const manager = this.ctx.music.get(interaction.guildId);
 
       if (!manager || !manager.currentSong)
         return interaction.reply({
@@ -24,7 +24,7 @@ export default class extends OriginEvent {
       return interaction.reply("Successfully skipped the current song");
     }
     if (interaction.customId == "pauseSong") {
-      const manager = this.ctx.music.songQueues.get(interaction.guildId);
+      const manager = this.ctx.music.get(interaction.guildId);
 
       if (!manager || !manager.currentSong)
         return commandError(interaction, "There are currently no songs playing in this guild")
@@ -35,7 +35,7 @@ export default class extends OriginEvent {
       return commandSuccessFollowUp(interaction, "Successfully paused the song");
     }
     if (interaction.customId == "unpauseSong") {
-      const manager = this.ctx.music.songQueues.get(interaction.guildId);
+      const manager = this.ctx.music.get(interaction.guildId);
 
       if (!manager || !manager.currentSong)
         return interaction.reply(

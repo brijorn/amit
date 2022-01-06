@@ -23,7 +23,7 @@ export default class extends Command {
     const button = new MessageButton().setCustomId("skipSong").setLabel("Skip").setStyle('PRIMARY');
     const row = new MessageActionRow().addComponents(button);
 
-    const manager = this.ctx.music.songQueues.get(
+    const manager = this.ctx.music.get(
       interaction.guildId
     );
 

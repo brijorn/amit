@@ -7,10 +7,10 @@ import { BotContext } from '../typings';
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
 export default class CommandHandler extends Collection<string, Command> {
-  private bot: Client;
-  constructor(bot: Client) {
+  private ctx: BotContext;
+  constructor(ctx: BotContext) {
     super();
-    this.bot = bot;
+    this.ctx = ctx;
 
     this.init().catch((err) => Promise.reject(new Error(err)));
   }
@@ -40,7 +40,7 @@ export default class CommandHandler extends Collection<string, Command> {
         const cmdClass = ((r) => r.default || r)(
           require(`${path}/${module}/${cmdFile}`)
         );
-        const cmd = new cmdClass(this.bot) as Command;
+        const cmd = new cmdClass(this.ctx) as Command;
         commands.push(cmd);
       });
     }

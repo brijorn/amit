@@ -4,12 +4,12 @@ import { join } from 'path';
 import OriginEvent from '../lib/structures/Event';
 import { BotContext } from '../typings';
 export default class EventHandler extends Collection<string, Event> {
-    private bot: Client;
+    private ctx: BotContext;
 
-    constructor(bot: Client) {
+    constructor(ctx: BotContext) {
         super();
 
-        this.bot = bot;
+        this.ctx = ctx;
 
         this.init().catch((err) => console.error(err));
     }
@@ -25,8 +25,8 @@ export default class EventHandler extends Collection<string, Event> {
             let EventClass = ((r) => r.default || r)(
                 require(`${path}/${eventFile}`)
               );
-            const event = new EventClass(this.bot) as OriginEvent
-            this.bot[event.once ? 'once' : 'on'](event.name, (...args: unknown[]) => event.execute(...args));
+            const event = new EventClass(this.ctx) as OriginEvent
+            this.ctx.bot[event.once ? 'once' : 'on'](event.name, (...args: unknown[]) => event.execute(...args));
         }
         return Promise.resolve()
     }

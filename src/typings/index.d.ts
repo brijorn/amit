@@ -1,5 +1,5 @@
 import { AudioPlayer, AudioResource, VoiceConnection } from "@discordjs/voice";
-import { Client, GuildMember, TextBasedChannels, VoiceChannel } from "discord.js";
+import { Client, Collection, GuildMember, TextBasedChannels, VoiceChannel } from "discord.js";
 import CommandHandler from "../handlers/CommandHandler";
 import EventHandler from "../handlers/EventHandler";
 import SongManager from "../lib/music/SongManager";
