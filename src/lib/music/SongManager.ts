@@ -52,7 +52,9 @@ export default class {
   }
 
   nextSong() {
-    this.previousSongs.push(this.currentSong!);
+    // Prevent running when no song has been played
+    if (!this.currentSong) return;
+    this.previousSongs.push(this.currentSong);
     this.currentSong = this.queue.shift();
 
     if (!this.currentSong) {
