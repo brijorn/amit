@@ -47,6 +47,18 @@ export default class extends Command {
 
     const video = keywordSearch.videos.filter((v) => v.type == 'video')[0];
 
+    // Get the Video from YTDL
+    let getYtdlVideo;
+    try {
+      getYtdlVideo = ytdl(video.url, {
+        filter: 'audioonly',
+        highWaterMark: 1 << 25
+      })
+    } catch(err) {
+      console.error(err)
+      return interaction.reply("I received an error trying to get the song. The video may be restricted.")
+    }
+
     const song: Song = {
       channel: interaction.channel!,
 
@@ -60,15 +72,7 @@ export default class extends Command {
         duration: video.seconds
       },
       announced: false,
-      resource: createAudioResource(
-        ytdl(video.url, {
-          filter: 'audioonly',
-          highWaterMark: 1 << 25
-        }),
-        {
-          inlineVolume: true
-        }
-      ),
+      resource: createAudioResource(getYtdlVideo),
       timestamp: video.timestamp,
       user: member
     };
