@@ -14,12 +14,24 @@ async function register() {
     return cmd.data.toJSON();
   });
 
-  console.log(commands);
-  console.log(restCmds);
   const send = await rest.put(Routes.applicationCommands(auth.clientId), {
     body: restCmds
   });
-  console.log(send);
+
+}
+
+async function registerSingleSlash(target: string) {
+  const env = require('dotenv').config();
+  const rest = new REST({ version: '9' }).setToken(process.env.DISCORD_TOKEN!);
+  const bot: any = {};
+
+  const commands = await new CommandHandler(bot).init();
+
+  const targetCommand = commands.get(target)
+
+  const send = await rest.put(Routes.applicationCommands(auth.clientId), {
+    body: [targetCommand?.data.toJSON()]
+  });
 }
 
 
